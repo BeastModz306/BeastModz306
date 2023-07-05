@@ -1,0 +1,43 @@
+local UI = require(script.UI)
+
+-- Create the GUI frame
+local frame = UI.createGUI()
+
+-- Add buttons to the frame
+local buttonNames = {
+    {name = "Button 1", link = "https://example.com/link1"},
+    {name = "Button 2", link = "https://example.com/link2"},
+    {name = "Button 3", link = "https://example.com/link3"},
+    {name = "Button 4", link = "https://example.com/link4"},
+    {name = "Button 5", link = "https://example.com/link5"},
+    {name = "Button 6", link = "https://example.com/link6"},
+    {name = "Button 7", link = "https://example.com/link7"},
+    {name = "Button 8", link = "https://example.com/link8"},
+}
+
+for i, buttonData in ipairs(buttonNames) do
+    UI.createButton(buttonData.name, UDim2.new(0, 20, 0, (i * 40) + 20), frame, function()
+        print("Opening link: " .. buttonData.link)
+        -- You can replace the print statement with code to open the link in a web browser
+    end)
+end
+
+local tab1, tab1Button = frame:createTab("Tab 1")
+local tab2, tab2Button = frame:createTab("Tab 2")
+local tab3, tab3Button = frame:createTab("Tab 3")
+local tab4, tab4Button = frame:createTab("Tab 4")
+local tab5, tab5Button = frame:createTab("Tab 5")
+
+-- Show the first tab by default
+tab1.Visible = true
+
+-- Add a close button
+UI.createButton("X", UDim2.new(1, -25, 0, 5), frame, function()
+    frame.Visible = false
+end)
+
+-- Add a toggle button
+local toggleButton = UI.createButton("Open GUI", UDim2.new(0, 10, 0, 10), frame, function()
+    frame.Visible = not frame.Visible
+    toggleButton.Text = frame.Visible and "Close GUI" or "Open GUI"
+end)
