@@ -22,11 +22,12 @@ for i, buttonData in ipairs(buttonNames) do
     end)
 end
 
-local tab1, tab1Button = frame:createTab("Tab 1")
-local tab2, tab2Button = frame:createTab("Tab 2")
-local tab3, tab3Button = frame:createTab("Tab 3")
-local tab4, tab4Button = frame:createTab("Tab 4")
-local tab5, tab5Button = frame:createTab("Tab 5")
+-- Create tabs
+local tab1 = UI.createTab("Tab 1", frame)
+local tab2 = UI.createTab("Tab 2", frame)
+local tab3 = UI.createTab("Tab 3", frame)
+local tab4 = UI.createTab("Tab 4", frame)
+local tab5 = UI.createTab("Tab 5", frame)
 
 -- Show the first tab by default
 tab1.Visible = true
