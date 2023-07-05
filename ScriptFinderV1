@@ -1,0 +1,139 @@
+-- Create the GUI frame
+local gui = Instance.new("ScreenGui")
+gui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 600, 0, 400) -- Increased size to 600x400
+frame.Position = UDim2.new(0.5, -300, 0.5, -200)
+frame.BackgroundColor3 = Color3.new(0, 0, 0)
+frame.BorderColor3 = Color3.new(0, 0, 0)
+frame.BorderSizePixel = 2
+frame.Visible = false
+frame.Parent = gui
+
+-- Add UI elements to the frame
+local tabs = {}
+local tabButtons = {}
+local currentTab = nil
+
+local function createTab(tabName)
+    local tab = Instance.new("Frame")
+    tab.Name = tabName
+    tab.Size = UDim2.new(1, 0, 1, 0)
+    tab.BackgroundColor3 = Color3.new(0, 0, 0)
+    tab.Visible = false
+    tab.Parent = frame
+
+    local tabButton = Instance.new("TextButton")
+    tabButton.Name = tabName .. "Button"
+    tabButton.Size = UDim2.new(0, 80, 0, 30)
+    tabButton.Position = UDim2.new(0, (#tabButtons * 90) + 10, 0, 10)
+    tabButton.BackgroundColor3 = Color3.new(0, 0, 0)
+    tabButton.TextColor3 = Color3.new(1, 1, 1)
+    tabButton.TextSize = 14
+    tabButton.Text = tabName
+    tabButton.Parent = frame
+
+    -- Connect the tab button click event
+    tabButton.MouseButton1Click:Connect(function()
+        if currentTab then
+            currentTab.Visible = false
+        end
+        currentTab = tab
+        currentTab.Visible = true
+    end)
+
+    table.insert(tabs, tab)
+    table.insert(tabButtons, tabButton)
+
+    -- Add buttons to the tab
+    for i = 1, 8 do
+        local button = Instance.new("TextButton")
+        button.Name = "Button" .. i
+        button.Size = UDim2.new(0, 100, 0, 30)
+        button.Position = UDim2.new(0, 20, 0, (i * 40) + 20)
+        button.BackgroundColor3 = Color3.new(1, 1, 1)
+        button.TextColor3 = Color3.new(0, 0, 0)
+        button.TextSize = 14
+        button.Text = "Button " .. i
+        button.Parent = tab
+
+        button.MouseButton1Click:Connect(function()
+            -- Button click logic
+            print("Button " .. i .. " clicked!")
+        end)
+    end
+end
+
+-- Prompt the user to enter names and links for the eight buttons
+local buttonNames = {
+    {name = "Button 1", link = "https://example.com/link1"},
+    {name = "Button 2", link = "https://example.com/link2"},
+    {name = "Button 3", link = "https://example.com/link3"},
+    {name = "Button 4", link = "https://example.com/link4"},
+    {name = "Button 5", link = "https://example.com/link5"},
+    {name = "Button 6", link = "https://example.com/link6"},
+    {name = "Button 7", link = "https://example.com/link7"},
+    {name = "Button 8", link = "https://example.com/link8"},
+}
+
+for i, buttonData in ipairs(buttonNames) do
+    local button = Instance.new("TextButton")
+    button.Name = buttonData.name
+    button.Size = UDim2.new(0, 100, 0, 30)
+    button.Position = UDim2.new(0, 20, 0, (i * 40) + 20)
+    button.BackgroundColor3 = Color3.new(1, 1, 1)
+    button.TextColor3 = Color3.new(0, 0, 0)
+    button.TextSize = 14
+    button.Text = buttonData.name
+    button.Parent = frame
+
+    button.MouseButton1Click:Connect(function()
+        -- Open the link associated with the button
+        print("Opening link: " .. buttonData.link)
+        -- You can replace the print statement with code to open the link in a web browser
+    end)
+end
+
+createTab("Tab 1")
+createTab("Tab 2")
+createTab("Tab 3")
+createTab("Tab 4")
+createTab("Tab 5")
+
+-- Show the first tab by default
+if tabs[1] then
+    currentTab = tabs[1]
+    currentTab.Visible = true
+end
+
+-- Add a close button
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0, 20, 0, 20)
+closeButton.Position = UDim2.new(1, -25, 0, 5)
+closeButton.BackgroundColor3 = Color3.new(1, 0, 0)
+closeButton.TextColor3 = Color3.new(1, 1, 1)
+closeButton.TextSize = 14
+closeButton.Text = "X"
+closeButton.Parent = frame
+
+-- Add a toggle button
+local toggleButton = Instance.new("TextButton")
+toggleButton.Size = UDim2.new(0, 80, 0, 30)
+toggleButton.Position = UDim2.new(0, 10, 0, 10)
+toggleButton.BackgroundColor3 = Color3.new(0, 0, 0)
+toggleButton.TextColor3 = Color3.new(1, 1, 1)
+toggleButton.TextSize = 14
+toggleButton.Text = "Open GUI"
+toggleButton.Parent = gui
+
+-- Function to handle toggle button click event
+local isOpen = false
+local function toggleGUI()
+    isOpen = not isOpen
+    frame.Visible = isOpen
+    toggleButton.Text = isOpen and "Close GUI" or "Open GUI"
+end
+
+toggleButton.MouseButton1Click:Connect(toggleGUI)
+closeButton.MouseButton1Click:Connect(toggleGUI)
