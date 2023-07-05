@@ -1,0 +1,65 @@
+-- UI Library
+
+local UI = {}
+
+function UI.createButton(name, position, parent, onClick)
+    local button = Instance.new("TextButton")
+    button.Name = name
+    button.Size = UDim2.new(0, 100, 0, 30)
+    button.Position = position
+    button.BackgroundColor3 = Color3.new(1, 1, 1)
+    button.TextColor3 = Color3.new(0, 0, 0)
+    button.TextSize = 14
+    button.Text = name
+    button.Parent = parent
+
+    button.MouseButton1Click:Connect(onClick)
+
+    return button
+end
+
+function UI.createTab(tabName, frame, tabs, tabButtons)
+    local tab = Instance.new("Frame")
+    tab.Name = tabName
+    tab.Size = UDim2.new(1, 0, 1, 0)
+    tab.BackgroundColor3 = Color3.new(0, 0, 0)
+    tab.Visible = false
+    tab.Parent = frame
+
+    local tabButton = UI.createButton(tabName .. "Button", UDim2.new(0, (#tabButtons * 90) + 10, 0, 10), frame, function()
+        for _, t in ipairs(tabs) do
+            t.Visible = false
+        end
+        tab.Visible = true
+    end)
+
+    table.insert(tabs, tab)
+    table.insert(tabButtons, tabButton)
+
+    return tab, tabButton
+end
+
+function UI.createGUI()
+    local gui = Instance.new("ScreenGui")
+    gui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0, 600, 0, 400)
+    frame.Position = UDim2.new(0.5, -300, 0.5, -200)
+    frame.BackgroundColor3 = Color3.new(0, 0, 0)
+    frame.BorderColor3 = Color3.new(0, 0, 0)
+    frame.BorderSizePixel = 2
+    frame.Visible = false
+    frame.Parent = gui
+
+    local tabs = {}
+    local tabButtons = {}
+
+    function frame:createTab(tabName)
+        return UI.createTab(tabName, self, tabs, tabButtons)
+    end
+
+    return frame
+end
+
+return UI
